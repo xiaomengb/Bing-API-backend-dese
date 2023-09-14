@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cxb.third.mapper.AlipayInfoMapper">
+
+    <resultMap id="BaseResultMap" type="com.cxb.third.model.domain.AlipayInfo">
+            <id property="orderNumber" column="orderNumber" jdbcType="BIGINT"/>
+            <result property="subject" column="subject" jdbcType="VARCHAR"/>
+            <result property="totalAmount" column="totalAmount" jdbcType="DECIMAL"/>
+            <result property="buyerPayAmount" column="buyerPayAmount" jdbcType="DECIMAL"/>
+            <result property="buyerId" column="buyerId" jdbcType="VARCHAR"/>
+            <result property="tradeNo" column="tradeNo" jdbcType="VARCHAR"/>
+            <result property="tradeStatus" column="tradeStatus" jdbcType="VARCHAR"/>
+            <result property="gmtPayment" column="gmtPayment" jdbcType="TIMESTAMP"/>
+            <result property="isDelete" column="isDelete" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        orderNumber,subject,totalAmount,
+        buyerPayAmount,buyerId,tradeNo,
+        tradeStatus,gmtPayment,isDelete
+    </sql>
+</mapper>

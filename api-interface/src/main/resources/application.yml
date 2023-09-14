@@ -1,0 +1,17 @@
+server:
+  port: 7099
+  servlet:
+    context-path: /api/interface
+
+spring:
+  config:
+    import: optional:file:.env[.properties]
+  profiles:
+    active: dev
+  application:
+    name: api-interface
+
+  cloud:
+    nacos:
+      discovery:
+        server-addr: ${NACOS_HOST}:8848

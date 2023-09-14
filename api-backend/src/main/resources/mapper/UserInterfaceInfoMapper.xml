@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cxb.backend.mapper.UserInterfaceInfoMapper">
+
+    <resultMap id="BaseResultMap" type="com.cxb.apicommon.model.entity.UserInterfaceInfo">
+        <id property="id" column="id" jdbcType="BIGINT"/>
+        <result property="userId" column="userId" jdbcType="BIGINT"/>
+        <result property="interfaceInfoId" column="interfaceInfoId" jdbcType="BIGINT"/>
+        <result property="totalNum" column="totalNum" jdbcType="INTEGER"/>
+        <result property="leftNum" column="leftNum" jdbcType="INTEGER"/>
+        <result property="status" column="status" jdbcType="INTEGER"/>
+        <result property="createTime" column="createTime" jdbcType="TIMESTAMP"/>
+        <result property="updateTime" column="updateTime" jdbcType="TIMESTAMP"/>
+        <result property="isDelete" column="isDelete" jdbcType="TINYINT"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,userId,interfaceInfoId,
+        totalNum,status,createTime,
+        updateTime,isDelete
+    </sql>
+    <select id="listTopInvokeInterfaceInfo" resultType="com.cxb.backend.model.vo.InvokeInterfaceInfoVO">
+        SELECT interfaceInfoId as id, sum(totalNum) as invokeNum
+        FROM `user_interface_info`
+        GROUP BY interfaceInfoId
+        order by invokeNum desc
+        limit #{limit}
+    </select>
+    <select id="getUserInterfaceInfoVoList" resultType="com.cxb.backend.model.vo.UserInterfaceInfoVo">
+        select uii.id,
+               uii.leftNum,
+               uii.totalNum,
+               uii.createTime,
+               uii.updateTime,
+               uii.interfaceInfoId,
+               ii.id,
+               ii.name,
+               ii.status as interfaceStatus,
+               ii.description,
+               ii.method,
+               ii.price,
+               ii.url
+        from user_interface_info as uii
+                 left join interface_info as ii on uii.interfaceInfoId = ii.id
+        where (ii.name like concat('%', #{searchValue}, '%')
+            or ii.description like concat('%', #{searchValue}, '%'))
+          and uii.userId = #{userId}
+          and uii.status = 0
+          and uii.isDelete = 0
+        order by uii.createTime
+    </select>
+</mapper>

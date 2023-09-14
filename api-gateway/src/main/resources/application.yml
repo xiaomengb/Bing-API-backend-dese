@@ -1,0 +1,114 @@
+server:
+  port: 8090
+  servlet:
+    # cookie 30 天过期
+    session:
+      cookie:
+        max-age: 2592000
+        #cookie作用域
+#        domain: #
+
+spring:
+  config:
+    import: optional:file:.env[.properties]
+  profiles:
+    active: dev
+  application:
+    name: api-gateway
+  main:
+    web-application-type: reactive #设置为响应式
+  mvc:
+    throw-exception-if-no-handler-found: true  #抛404异常
+
+  cloud:
+    nacos:
+      discovery:
+        server-addr: ${NACOS_HOST}:8848
+    gateway:
+      globalcors: # 全局的跨域处理,具体微服务上的跨域需要进行关闭，否则无效
+        add-to-simple-url-handler-mapping: true # 解决options请求被拦截问题
+        corsConfigurations:
+          '[/**]':
+            allowedOriginPatterns: # 允许哪些网站的跨域请求
+              - "*"
+            allowedMethods: # 允许的跨域ajax的请求方式
+              - "GET"
+              - "POST"
+              - "DELETE"
+              - "PUT"
+              - "OPTIONS"
+            allowedHeaders: "*" # 允许在请求中携带的头信息
+            allowCredentials: true # 是否允许携带cookie
+            maxAge: 360000 # 这次跨域检测的有效期
+      routes:
+        - id: api_backend_route
+          uri: lb://api-backend
+          predicates:
+            - Path=/api/backend/**
+
+        - id: api_order_route
+          uri: lb://api-order
+          predicates:
+            - Path=/api/order/**
+
+        - id: api_third_route
+          uri: lb://api-third
+          predicates:
+            - Path=/api/third/**
+
+
+  # redis 配置
+  redis:
+    port: 6379
+    host: ${REDIS_HOST}
+    database: 0
+    password: ${REDIS_PASSWORD}
+
+  rabbitmq:
+    host: ${RABBITMQ_HOST}
+    port: 5672
+    username: ${RABBITMQ_USERNAME}
+    password: ${RABBITMQ_PASSWORD}
+    virtual-host: /
+
+logging:
+  level:
+    org:
+      springframework:
+        cloud:
+          gateway:
+            trace
+
+dubbo:
+  application:
+    name: dubbo-api-backend-consumer
+  protocol:  #协议配置，用于配置提供服务的协议信息，协议由提供方指定，消费方被动接受
+    name: dubbo
+    port: -1
+  registry:  #注册中心配置，用于配置连接注册中心相关信息
+    id: nacos-registry
+    address: nacos://${NACOS_HOST}:8848
+
+
+# 这里配置文档聚合规则
+knife4j:
+  gateway:
+    enabled: true
+    strategy: discover
+    discover:  # 开启服务发现，启动之后就会自动聚合在注册中心注册的所有微服务文档了
+      enabled: true
+      version: swagger2
+
+
+#自定义过滤器控制
+bing-api:
+  gateway-filter:
+    access-controller: #访问控制
+      enabled: true
+      #黑名单
+      balkList:
+    log:  #日志
+      request:
+        enabled: true
+      response:
+        enabled: true

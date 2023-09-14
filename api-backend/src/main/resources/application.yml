@@ -1,0 +1,85 @@
+server:
+  port: 8111
+  servlet:
+    context-path: /api/backend
+
+
+upload:
+  path: D:\Program Files\uploadFile\
+
+spring:
+  config:
+    import: optional:file:.env[.properties]
+  profiles:
+    active: dev
+  servlet:
+    multipart:
+      max-file-size: 10MB #上传文件设置
+  application:
+    name: api-backend
+  cloud:
+    nacos:
+      discovery:
+        server-addr: ${NACOS_HOST}:8848
+
+  # DataSource Config
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/bing_api
+    username: ${MYSQL_USERNAME}
+    password: ${MYSQL_PASSWORD}
+
+  mvc:
+    static-path-pattern: /pic/**  #静态资源路径
+  web:
+    resources:
+      static-locations: file:${upload.path} #静态资源位置
+  # session 失效时间（分钟）
+
+  # redis 配置
+  redis:
+    port: 6379
+    host: ${REDIS_HOST}
+    database: 0
+    password: ${REDIS_PASSWORD}
+
+  rabbitmq:
+    host: ${RABBITMQ_HOST}
+    port: 5672
+    username: ${RABBITMQ_USERNAME}
+    password: ${RABBITMQ_PASSWORD}
+    virtual-host: /
+
+
+#dubbo不支持spring import 配置文件
+dubbo:
+  application:
+    name: dubbo-api-backend-provider
+  protocol: #协议配置，用于配置提供服务的协议信息，协议由提供方指定，消费方被动接受
+    name: dubbo
+    port: -1
+  registry: #注册中心配置，用于配置连接注册中心相关信息
+    id: nacos-registry
+    address: nacos://${NACOS_HOST}:8848
+
+mybatis-plus:
+  configuration:
+    map-underscore-to-camel-case: false
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  global-config:
+    db-config:
+      logic-delete-field: isDelete # 全局逻辑删除的实体字段名
+      logic-delete-value: 1 # 逻辑已删除值(默认为 1)
+      logic-not-delete-value: 0 # 逻辑未删除值(默认为 0)
+
+bing-api:
+  client:
+    access-key: 0264f80e5736aeea4ab07d2c71371dc9
+    secret-key: dcdf51e9bf65f1bcba462af39843cec8
+
+
+# knife4j的增强配置
+knife4j:
+  enable: true
+
+
