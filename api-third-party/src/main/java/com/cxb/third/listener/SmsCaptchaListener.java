@@ -46,9 +46,9 @@ public class SmsCaptchaListener {
         try {
         com.aliyun.teaopenapi.models.Config config = new com.aliyun.teaopenapi.models.Config()
                 // 必填，您的 AccessKey ID
-                .setAccessKeyId("LTAI5t6H3RLDneCUNzuDHT4P")
+                .setAccessKeyId("#")
                 // 必填，您的 AccessKey Secret
-                .setAccessKeySecret("7jkrTbPiRkKQMHCsbB9zUjkFRgBzhx");
+                .setAccessKeySecret("#");
         // Endpoint 请参考 https://api.aliyun.com/product/Dysmsapi
         config.endpoint = "dysmsapi.aliyuncs.com";
         Client client = new Client(config);

@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/mp3")
 public class TextToMp3Controller {
 
-    private static final String TTM_API = "https://api.a20safe.com/api.php?api=8&key=b72bc48c0dd9fada3f7cd8200f710ae7&text=";
+    private static final String TTM_API = "https://api.a20safe.com/api.php?api=8&key=#&text=";
 
 
     @PostMapping("/ttm")

@@ -47,8 +47,6 @@ public class InterfaceInfoServiceImpl extends ServiceImpl<InterfaceInfoMapper, I
                 throw new BusinessException(ErrorCode.PARAMS_ERROR);
             }
         }
-        // 如果接口名称不为空且长度大于50,抛出参数错误的异常,错误信息为"名称过长"
-        // 本期写成<50,(没有解决),第二期视频中解决了
         if (CharSequenceUtil.isNotBlank(name) && name.length() > 50) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR, "名称过长");
         }

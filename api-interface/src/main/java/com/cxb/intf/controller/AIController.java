@@ -29,7 +29,7 @@ public class AIController {
     private static final String AI_CHAT_API = "https://api.oioweb.cn/api/ai/chat";
 
 
-    private static final String AI_QA_API = "https://api.a20safe.com/api.php?api=51&key=b72bc48c0dd9fada3f7cd8200f710ae7&text=";
+    private static final String AI_QA_API = "https://api.a20safe.com/api.php?api=51&key=#&text=";
 
 
 

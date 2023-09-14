@@ -121,7 +121,6 @@ public class OrderPaySuccessListener {
             // 手动删除
             try {
                 log.error("处理支付成功消息失败！！！");
-                // 第三个参数true，表示这个消息会重新进入队列(我们手动重试，避免有异常导致循环)
                 channel.basicNack(message.getMessageProperties().getDeliveryTag(), false, false);
             } catch (IOException e) {
                 e.printStackTrace();
